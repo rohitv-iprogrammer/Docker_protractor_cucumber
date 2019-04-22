@@ -1,0 +1,67 @@
+#Mainter : Promode
+version: '2'
+
+services:
+    progrid:
+        image: selenium/hub:2.53.1
+        container_name: progrid
+        privileged: true
+        ports:
+            - 4444:4444
+        environment:
+            - GRID_TIMEOUT=240000
+            - GRID_BROWSER_TIMEOUT=240000
+        networks:
+            - progrid_grid_internal
+
+    nodechrome:
+        image: selenium/node-chrome-debug:2.53.1-americium
+        privileged: true
+        depends_on:
+            - progrid
+        ports:
+            - 5900
+        environment:
+            - no_proxy=localhost
+            - TZ=Europe/London
+            - HUB_PORT_4444_TCP_ADDR=progrid
+            - HUB_PORT_4444_TCP_PORT=4444
+        networks:
+            - progrid_grid_internal
+
+    nodefirefox:
+        image: selenium/node-firefox-debug:2.53.1
+        privileged: true
+        depends_on:
+            - progrid
+        ports:
+            - 5901  
+        environment:
+            - no_proxy=localhost
+            - TZ=Europe/London
+            - HUB_PORT_4444_TCP_ADDR=progrid
+            - HUB_PORT_4444_TCP_PORT=4444
+        networks:
+            - progrid_grid_internal
+    Protractor:
+        image: shivay/protractor-cucmber
+        container_name: automation
+        privileged: true
+        depends_on:
+            - progrid
+        ports:
+            - 5902  
+        environment:
+            #npm install: 1 # 1 to update composer before running test. Composer.json must be mounted to behat container.
+            - no_proxy=localhost
+            - TZ=Europe/London
+            - HUB_PORT_4444_TCP_ADDR=progrid
+            - HUB_PORT_4444_TCP_PORT=4444
+        networks:
+            - progrid_grid_internal
+        volumes:
+          - ./conf.js:/e2e/conf.js # Mount behat.yml file as /e2e/behat.yml.
+          - ./features:/e2e/features # Mount features folder as /e2e/features.
+
+networks:
+    progrid_grid_internal:

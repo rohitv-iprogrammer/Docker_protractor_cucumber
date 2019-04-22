@@ -1,0 +1,35 @@
+version: "2.2"
+
+services:
+    NameOfHub:
+        image: selenium/hub
+        container_name: NameOfHub
+        privileged: true
+        ports:
+            - 4444:4444
+        environment:
+            - GRID_TIMEOUT=240000
+            - GRID_BROWSER_TIMEOUT=240000
+    NameOfNode:
+        image: selenium/node-chrome-debug
+        privileged: true
+        depends_on:
+            - NameOfHub
+        ports:
+            - 5900
+        environment:
+            - HUB_PORT_4444_TCP_ADDR=NameOfHub
+            - HUB_PORT_4444_TCP_PORT=4444
+
+    procuservice:
+        image: shivay/protractor-cucmber
+        container_name: automation
+        environment:
+          npm install: 1 # 1 to update composer before running test. Composer.json must be mounted to behat container.
+        restart: on-failure:5
+        network_mode: bridge
+        volumes:
+          - ./conf.js:/e2e/conf.js # Mount behat.yml file as /e2e/behat.yml.
+          - ./features:/e2e/features # Mount features folder as /e2e/features.
+          - ./entrypoint.sh:/e2e/entrypoint.sh # Mount features folder as /e2e/features.
+
