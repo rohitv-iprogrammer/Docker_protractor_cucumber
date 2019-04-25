@@ -1,7 +1,7 @@
 
 exports.config = {
    
-    seleniumAddress: 'http://172.18.0.4:5555/wd/hub',
+    seleniumAddress: 'http://localhost:4444/wd/hub',
    // baseUrl: 'https://www.facebook.com/',
    //directConnect: true,
     capabilities: {
