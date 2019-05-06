@@ -9,7 +9,7 @@
 
 keywordCheck = function (){
 var {setDefaultTimeout} = require('cucumber'); 
-setDefaultTimeout(60 * 1000);
+setDefaultTimeout(30 * 1000);
 return 'time';
 }
 

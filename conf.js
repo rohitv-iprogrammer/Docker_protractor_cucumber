@@ -1,9 +1,10 @@
 
 exports.config = {
    
-    seleniumAddress: 'http://localhost:4444/wd/hub',
-   // baseUrl: 'https://www.facebook.com/',
+   // seleniumAddress: 'http://192.168.151.209:4444/wd/hub',
+   // baseUrl: 'https://ssguat.serviceurl.in/sme/abmu/selfserve/#/',
    //directConnect: true,
+   angular: false,
     capabilities: {
         browserName:'chrome',
         shardTestFiles: true,
@@ -14,12 +15,12 @@ exports.config = {
     framework: 'custom',  // set to "custom" instead of cucumber.
     frameworkPath: require.resolve('protractor-cucumber-framework'),  // path relative to the current config file
     specs: [
-        'features/test.feature'     // Specs here are the cucumber feature files
+        'features/test.feature' // Specs here are the cucumber feature files
     ],
     // cucumber command line options
     cucumberOpts: {
         'no-colors': true,
-        require: ['features/step-definition/cucumberStep.js'],  // require step definition files before executing features
+        require: ['features/step-definition/*.steps.js'],  // require step definition files before executing features
         tags: [],                      // <string[]> (expression) only execute the features or scenarios with tags matching the expression
         strict: true,                  // <boolean> fail if there are any undefined or pending steps
         format: [],            // <string[]> (type[:path]) specify the output format, optionally supply PATH to redirect formatter output (repeatable)

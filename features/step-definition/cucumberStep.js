@@ -3,8 +3,10 @@
     Given = cucumber.Given;
     When =  cucumber.When,
     Then = cucumber.Then;
+    And = cucumber.And;
    
     var keywordCheck = require("./keyword");
+    var assert = require('assert');
     
     keywordCheck();
     console.log('wait calling',keywordCheck);
@@ -22,7 +24,6 @@
     browser.get("https://www.facebook.com").then(function(){      
         callback(); // To tell the cucumber that we are done with this step
        })
-    
     });
     
     When(/^I enter username$/, function (callback) {
